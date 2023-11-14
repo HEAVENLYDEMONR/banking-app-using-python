@@ -1,0 +1,96 @@
+class Account:
+    def __init__(self, account_number, account_holder_name, account_balance):
+        self.account_number = account_number
+        self.account_holder_name = account_holder_name
+        self.account_balance = account_balance
+
+    def deposit(self, amount):
+        self.account_balance += amount
+
+    def withdraw(self, amount):
+        if amount > self.account_balance:
+            print("Insufficient balance!")
+        else:
+            self.account_balance -= amount
+
+    def check_balance(self):
+        return self.account_balance
+
+class BankingApp:
+    def __init__(self):
+        self.accounts = []
+
+    def create_account(self, account_holder_name, initial_deposit):
+        account_number = len(self.accounts) + 1
+        new_account = Account(account_number, account_holder_name, initial_deposit)
+        self.accounts.append(new_account)
+
+        print("Account created successfully!")
+        print("Account number:", new_account.account_number)
+
+    def deposit_money(self, account_number, amount):
+        account = self.get_account_by_number(account_number)
+        account.deposit(amount)
+
+        print("Money deposited successfully!")
+        print("Current balance:", account.check_balance())
+
+    def withdraw_money(self, account_number, amount):
+        account = self.get_account_by_number(account_number)
+        account.withdraw(amount)
+
+        print("Money withdrawn successfully!")
+        print("Current balance:", account.check_balance())
+
+    def check_balance(self, account_number):
+        account = self.get_account_by_number(account_number)
+        balance = account.check_balance()
+
+        print("Current balance:", balance)
+
+    def get_account_by_number(self, account_number):
+        for account in self.accounts:
+            if account.account_number == account_number:
+                return account
+
+        return None
+
+def main():
+    banking_app = BankingApp()
+
+    while True:
+        print("What do you want to do?")
+        print("1. Create account")
+        print("2. Deposit money")
+        print("3. Withdraw money")
+        print("4. Check balance")
+        print("5. Exit")
+
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            account_holder_name = input("Enter account holder name: ")
+            initial_deposit = float(input("Enter initial deposit: "))
+
+            banking_app.create_account(account_holder_name, initial_deposit)
+        elif choice == "2":
+            account_number = int(input("Enter account number: "))
+            amount = float(input("Enter amount to deposit: "))
+
+            banking_app.deposit_money(account_number, amount)
+        elif choice == "3":
+            account_number = int(input("Enter account number: "))
+            amount = float(input("Enter amount to withdraw: "))
+
+            banking_app.withdraw_money(account_number, amount)
+        elif choice == "4":
+            account_number = int(input("Enter account number: "))
+
+            banking_app.check_balance(account_number)
+        elif choice == "5":
+            exit()
+        else:
+            print("Invalid choice!")
+
+if __name__ == "__main__":
+    main()
